@@ -1,0 +1,63 @@
+-- Crear base de datos
+CREATE DATABASE finalmoduloss06;
+
+-- Seleccionar la base de datos
+USE finalmoduloss06;
+
+-- Crea tabla de usuarios
+CREATE TABLE usuarios (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    PRIMARY KEY (id),
+    UNIQUE KEY unique_username (username)
+);
+
+-- Crea tabla de roles de usuarios
+CREATE TABLE usuario_roles (
+    usuario_id BIGINT NOT NULL,
+    roles VARCHAR(255) NOT NULL,
+    PRIMARY KEY (usuario_id, roles),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
+-- Crea tabla de alumnos
+CREATE TABLE alumnos (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    rut VARCHAR(255) NOT NULL,
+    nombre VARCHAR(255) NOT NULL,
+    direccion VARCHAR(255),
+    PRIMARY KEY (id)
+);
+
+-- Crea tabla de materias
+CREATE TABLE materias (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(255) NOT NULL,
+    alumno_id BIGINT,  -- Cambiado a BIGINT para que coincida con la columna id en alumnos
+    PRIMARY KEY (id),
+    FOREIGN KEY (alumno_id) REFERENCES alumnos(id) ON DELETE SET NULL
+);
+
+-- Insertar datos de ejemplo en usuarios
+INSERT INTO usuarios (nombre, username, email) VALUES 
+('Admin User', 'admin', 'admin@example.com'), 
+('Regular User', 'user', 'user@example.com'); 
+
+-- Inserta datos de ejemplo en usuario_roles
+INSERT INTO usuario_roles (usuario_id, roles) VALUES 
+(1, 'ROLE_ADMIN'), 
+(2, 'ROLE_CLIENT');
+
+-- Inserta datos de ejemplo en alumnos
+INSERT INTO alumnos (rut, nombre, direccion) VALUES 
+('12345678-9', 'juan oh', 'santiago'),
+('98765432-1', 'fernando robledo', 'puerto montt');
+
+-- Inserta datos de ejemplo en materias
+INSERT INTO materias (nombre, alumno_id) VALUES 
+('Matemáticas', 1),
+('Lenguaje', 1),
+('Historia', 2);
+
